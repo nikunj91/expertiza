@@ -14,7 +14,7 @@ module DynamicQuizAssignmentHelper
     @reviewer_id = reviewer_id
     @questionnaire_id = questionnaire_id
 
-    if (quiz_type == Assignment::RS_STUDENT_SELECTED)
+    if (quiz_type == Assignment::RS_AUTO_SELECTED)
       @questionnaires = Array.new
       @questionnaires << Questionnaire.find(@questionnaire_id)#student_selected_quiz_assignment( )
       return @questionnaires

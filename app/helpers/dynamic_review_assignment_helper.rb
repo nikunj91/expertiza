@@ -14,14 +14,14 @@ module DynamicReviewAssignmentHelper
     @reviewer_id = reviewer_id
     @topic_id = topic_id
 
-    if (review_type == Assignment::RS_STUDENT_SELECTED)
-      return student_selected_review_assignment( )
+    if (review_type == Assignment::RS_AUTO_SELECTED)
+      return auto_selected_review_assignment( )
     else
       return nil
     end
   end
 
-  def self.student_selected_review_assignment( )
+  def self.auto_selected_review_assignment( )
 
     # Get all the submissions available
     @submissions_in_current_cycle = find_submissions_in_current_cycle()

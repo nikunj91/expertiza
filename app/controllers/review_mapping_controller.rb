@@ -82,7 +82,7 @@ class ReviewMappingController < ApplicationController
     @available_submissions = DynamicReviewAssignmentHelper::review_assignment(assignment.id ,
                                                                               reviewer.id,
                                                                               requested_topic_id ,
-                                                                              Assignment::RS_STUDENT_SELECTED)
+                                                                              Assignment::RS_AUTO_SELECTED)
   end
   def add_quiz_response_map
     if ResponseMap.where(reviewed_object_id: params[:questionnaire_id], reviewer_id:  params[:participant_id]).first
