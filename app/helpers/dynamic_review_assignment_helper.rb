@@ -41,14 +41,22 @@ module DynamicReviewAssignmentHelper
   def self.build_submissions_availability()
     least_review_count = -1;
     max_no_reviews = 5
+    reviewer_teams=TeamsUser.where(user_id: @reviewer_id)
+
     @submissions_availability = Hash.new
     unless @submissions_in_current_cycle.nil?
       @submissions_in_current_cycle.each { |submission|
-
+        team_check=false
         if( least_review_count == -1)
           least_review_count = submission[1]
         end
-        if submission[0] != @reviewer_id
+        reviewer_teams.each do |reviewer_team|
+          if submission[0] == reviewer_team.team_id
+            team_check=true
+          end
+        end
+
+        if !team_check
           @submissions_availability[submission[0]] = get_state(least_review_count,submission[1],max_no_reviews)
         end
       }
@@ -84,17 +92,14 @@ module DynamicReviewAssignmentHelper
     #  wasting time on submissions that have no content as well as avoiding duplicate reviews
     #  of team submissions.
     if @topic_id.blank?
-      submissions_in_current_cycle = AssignmentParticipant.where(parent_id: @assignment_id)
+      submissions_in_current_cycle = AssignmentTeam.where(parent_id: @assignment_id)
     else
       #using topic_id to find participant.id(s).
       signUps = SignedUpTeam.where(topic_id: @topic_id)
       signUps.each do |signUp|
-        users = TeamsUser.where(team_id: signUp.team_id)
-        users.each do |user|
-          participant = Participant.where(user_id: user_id, parent_id: @assignment_id)
-          if participant
-            submissions_in_current_cycle << participant
-          end
+        team=Team.where(team_id: signUp.team_id)
+        if team
+          submissions_in_current_cycle << team
         end
       end
     end
