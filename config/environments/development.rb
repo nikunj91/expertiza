@@ -39,6 +39,6 @@ Expertiza::Application.configure do
   config.assets.debug = true
   config.react.variant = :development
 
-  config.log_level = :warn
+ # config.log_level = :all
 end
 
